@@ -28,7 +28,7 @@ namespace TrelloAPI.Controllers
         }
         
         [HttpPost]
-        public bool CadastrarCard(Card card){
+        public bool CadastrarCard([FromBody]Card card){
             throw new Exception("Não implementado ainda");
         }
 
