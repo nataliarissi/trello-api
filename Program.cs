@@ -1,3 +1,6 @@
+using TrelloAPI.Repositorios.Implementacoes;
+using TrelloAPI.Repositorios.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<ICardRepositorio, CardRepositorio>();
 
 var app = builder.Build();
 

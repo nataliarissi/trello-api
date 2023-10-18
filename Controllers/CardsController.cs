@@ -1,6 +1,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using TrelloAPI.Entidades;
+using TrelloAPI.Repositorios.Interfaces;
 
 namespace TrelloAPI.Controllers
 {
@@ -9,10 +10,16 @@ namespace TrelloAPI.Controllers
     [Produces("application/json")]
     public class CardsController : ControllerBase
     {
+        private ICardRepositorio _repositorio { get; set; }
+
+        public CardsController(ICardRepositorio repositorio){
+            _repositorio = repositorio;
+        }
+
         [HttpGet]
         [Route("{id}")]
-        public Card ObterCardCompletoPorId(int id){
-            throw new Exception("Não implementado ainda");
+        public Card? ObterCardCompletoPorId(int id){
+            return _repositorio.ObterCardCompletoPorId(id);
         }
 
         [HttpGet]
