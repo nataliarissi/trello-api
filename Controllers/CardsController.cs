@@ -18,27 +18,33 @@ namespace TrelloAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public Card? ObterCardCompletoPorId(int id){
-            return _repositorio.ObterCardCompletoPorId(id);
+        public Retorno<Card?> ObterCardCompletoPorId(int id){
+            Card? cardCompleto = _repositorio.ObterCardCompletoPorId(id);
+            if(cardCompleto == null){
+                return new Retorno<Card?>("Não foi possível encontrar o card solicitado"); 
+            }
+            return new Retorno<Card?>(cardCompleto);
+
+            // if(cardCompleto.Etiqueta == EtiquetasCard.Vermelho)
         }
 
         [HttpGet]
-        public List<Card> ObterTodosCards(){
+        public Retorno<List<Card>> ObterTodosCards(){
             throw new Exception("Não implementado ainda");
         }
         
         [HttpPost]
-        public bool CadastrarCard([FromBody]Card card){
+        public Retorno<bool> CadastrarCard([FromBody]Card card){
             throw new Exception("Não implementado ainda");
         }
 
         [HttpPut]
-        public bool AlterarDadosCard(Card card){
+        public Retorno<bool> AlterarDadosCard(Card card){
             throw new Exception("Não implementado ainda");
         }
         
         [HttpDelete]
-        public bool DeletarCard(int id){
+        public Retorno<bool> DeletarCard(int id){
             throw new Exception("Não implementado ainda");
         }
     }
