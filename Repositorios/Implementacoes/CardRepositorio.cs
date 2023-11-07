@@ -22,5 +22,14 @@ namespace TrelloAPI.Repositorios.Implementacoes
             }
 
         }
+
+        public List<Card> ListarTodosCards()
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString)){
+                string querySql = "select * from Card";
+
+                return connection.Query<Card>(querySql).ToList();
+            }
+        }
     }
 }

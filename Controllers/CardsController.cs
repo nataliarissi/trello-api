@@ -30,12 +30,26 @@ namespace TrelloAPI.Controllers
 
         [HttpGet]
         public Retorno<List<Card>> ObterTodosCards(){
-            throw new Exception("Não implementado ainda");
+            List<Card> listaCards = _repositorio.ListarTodosCards();
+            return new Retorno<List<Card>>(listaCards);
         }
         
         [HttpPost]
         public Retorno<bool> CadastrarCard([FromBody]Card card){
-            throw new Exception("Não implementado ainda");
+            if(card.Etiqueta == EtiquetasCard.Vermelho && !(card.DataInicio > DateTime.Now)){
+                return new Retorno<bool>("Erro de etiqueta ou data");
+            }
+            if(card.Titulo.Contains("Amor") && card.Etiqueta != EtiquetasCard.Vermelho){
+                return new Retorno<bool>("Erro de escrita");
+            }
+            if(card.DataEntrega <= DateTime.Now){
+                return new Retorno<bool>("Erro de data");
+            }
+            
+            // if(card.Titulo){
+            //     return new Retorno<bool>("Título já existe no banco de dados");                
+            // }
+            return new Retorno<bool>(true);
         }
 
         [HttpPut]
