@@ -10,18 +10,22 @@ namespace TrelloAPI.Repositorios.Implementacoes
     {
         private string _connectionString { get; set; }
 
-        public CardRepositorio()
+        public CardRepositorio(IConfiguration configuration)
         {
-            _connectionString = "Data Source=.;Initial Catalog=Trello;User ID=sa;Password=Natalia@123;";
+            _connectionString = configuration.GetConnectionString("Trello");
         }
+        //public CardRepositorio()
+        //{
+        //    _connectionString = "Data Source=.;Initial Catalog=Trello;User ID=sa;Password=Natalia@123;";
+        //}
 
         public Card? ObterCardCompletoPorId(int id)
         {
-            var querySql = "SELECT * FROM CARD WHERE id = @id";
+            var queryPorID = "SELECT * FROM CARD WHERE id = @id";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                return connection.QueryFirstOrDefault<Card>(querySql, new { id });
+                return connection.QueryFirstOrDefault<Card>(queryPorID, new { id });
             }
         }
 
@@ -37,11 +41,11 @@ namespace TrelloAPI.Repositorios.Implementacoes
 
         public bool CadastrarCard([FromBody] CardCadastro cardCadastro)
         {
-            var querySql = "INSERT INTO CARD (Titulo, Etiqueta, DataEntrega, DataInicio) values (@Titulo, @Etiqueta, @DataEntrega, GETDATE())";
+            var queryCadastrar = "INSERT INTO CARD (Titulo, Etiqueta, DataEntrega, DataInicio) values (@Titulo, @Etiqueta, @DataEntrega, GETDATE())";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                var resultado = connection.Execute(querySql,
+                var resultado = connection.Execute(queryCadastrar,
                 new
                 {
                     Titulo = cardCadastro.Titulo,
@@ -52,13 +56,13 @@ namespace TrelloAPI.Repositorios.Implementacoes
             }
         }
 
-        public bool AlterarDadosCard(CardAlteracao cardAlteracao)
+        public bool AlterarDadosCard([FromBody] CardAlteracao cardAlteracao)
         {
-            var querySql = "UPDATE CARD SET Titulo = @Titulo, Etiqueta = @Etiqueta, DataEntrega = @DataEntrega WHERE Id = @Id";
+            var queryAlterar = "UPDATE CARD SET Titulo = @Titulo, Etiqueta = @Etiqueta, DataEntrega = @DataEntrega WHERE Id = @Id";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                var resultado = connection.Execute(querySql,
+                var resultado = connection.Execute(queryAlterar,
                 new
                 {
                     Id = cardAlteracao.Id,
@@ -71,16 +75,26 @@ namespace TrelloAPI.Repositorios.Implementacoes
         }
         public bool DeletarCard(int id)
         {
-            var querySql = "DELETE CARD WHERE Id = @Id";
+            var queryDeletar = "DELETE CARD WHERE Id = @Id";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                var resultado = connection.Execute(querySql,
+                var resultado = connection.Execute(queryDeletar,
                 new
                 {
                     Id = id
                 });
                 return resultado > 0;
+            }
+        }
+
+        public List<Card> ObterTopCard()
+        {
+            var queryTop = "SELECT TOP 3 * FROM CARD";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                return connection.Query<Card>(queryTop).ToList();
             }
         }
     }

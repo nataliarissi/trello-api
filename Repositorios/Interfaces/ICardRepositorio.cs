@@ -8,7 +8,8 @@ namespace TrelloAPI.Repositorios.Interfaces
         Card? ObterCardCompletoPorId(int id);
         List<Card> ListarTodosCards();
         bool CadastrarCard([FromBody] CardCadastro cardCadastro);
-        bool AlterarDadosCard(CardAlteracao cardAlteracao);
+        bool AlterarDadosCard([FromBody] CardAlteracao cardAlteracao);
         bool DeletarCard(int id);
+        List<Card> ObterTopCard();
     }
 }
