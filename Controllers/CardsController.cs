@@ -1,7 +1,8 @@
-
 using Microsoft.AspNetCore.Mvc;
 using TrelloAPI.Entidades;
+using TrelloAPI.Entidades.Cards;
 using TrelloAPI.Repositorios.Interfaces;
+using TrelloAPI.Servicos;
 
 namespace TrelloAPI.Controllers
 {
@@ -11,10 +12,12 @@ namespace TrelloAPI.Controllers
     public class CardsController : ControllerBase
     {
         private ICardRepositorio _repositorio { get; set; }
+        private ICardServico _servico;
 
-        public CardsController(ICardRepositorio repositorio)
+        public CardsController(ICardRepositorio repositorio, ICardServico servico)
         {
             _repositorio = repositorio;
+            _servico = servico;
         }
 
         [HttpGet]
@@ -26,6 +29,13 @@ namespace TrelloAPI.Controllers
             {
                 return new Retorno<Card?>("Não foi possível encontrar o card solicitado");
             }
+            var listaComentarios = _repositorio.ObterComentariosPorIdCard(id);
+
+            foreach (var comentario in listaComentarios)
+            {
+                cardCompleto.Comentarios.Add(comentario);
+            }
+
             return new Retorno<Card?>(cardCompleto);
 
             // if(cardCompleto.Etiqueta == EtiquetasCard.Vermelho)
@@ -80,6 +90,30 @@ namespace TrelloAPI.Controllers
         {
             List<Card> listaTopCards = _repositorio.ObterTopCard();
             return new Retorno<List<Card>>(listaTopCards);
+        }
+
+        [HttpGet("obterCards")]
+        public ObterCardsRetorno ObterCards()
+        {
+            return _servico.ObterTodosCardsComComentario();
+        }
+
+        [HttpGet("obterCardPorTitulo")]
+        public List<Card> ObterCardPorTitulo(string titulo)
+        {
+            return _repositorio.ObterCardPorTitulo(titulo);
+        }
+
+        [HttpGet("obterPalavraChave")]
+        public List<string> ObterPalavraChave()
+        {
+            return _repositorio.;
+        }
+
+        [HttpGet("obterCardPorPalavraChave")]
+        public List<Card> ObterCardPorPalavraChave(string palavra)
+        {
+            return _repositorio.ObterCardPorPalavraChave(palavra);
         }
     }
 }

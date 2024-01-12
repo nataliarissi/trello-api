@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TrelloAPI.Entidades;
-using TrelloAPI.Repositorios.Implementacoes;
+using TrelloAPI.Entidades.Cards;
+using TrelloAPI.Entidades.Comentarios;
 
 namespace TrelloAPI.Repositorios.Interfaces
 {
-    public class IComentarioRepositorio
+    public interface IComentarioRepositorio
     {
-        CardComentario cadastrarComentario([FromBody] CardComentario cardComentario);
-        bool AlterarComentario([FromBody] CardComentario cardComentario);
+        bool CadastrarComentario(ComentarioCadastro comentarioCadastro);
+        bool AlterarComentario(ComentarioAlteracao comentarioAlteracao);
         bool DeletarComentario(int id);
     }
 }

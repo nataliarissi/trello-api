@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TrelloAPI.Entidades;
+using TrelloAPI.Entidades.Cards;
+using TrelloAPI.Entidades.Comentarios;
 using TrelloAPI.Repositorios.Implementacoes;
 using TrelloAPI.Repositorios.Interfaces;
 
@@ -10,29 +12,32 @@ namespace TrelloAPI.Controllers
     [ApiController]
     public class ComentarioController : ControllerBase
     {
-        private IComentarioRepositorio _repositorio { get; set; }
+        private IComentarioRepositorio _comentario { get; set; }
 
-        public ComentarioController(IComentarioRepositorio repositorio)
+        public ComentarioController(IComentarioRepositorio comentario)
         {
-            _repositorio = repositorio;
+            _comentario = comentario;
         }
 
         [HttpPost("cadastrarComentarioCard")]
-        Retorno<CardComentario> cadastrarComentario([FromBody] CardComentario cardComentario)
+        public Retorno<bool> CadastrarComentario([FromBody] ComentarioCadastro comentarioCadastro)
         {
-            return null;
+            var resultado = _comentario.CadastrarComentario(comentarioCadastro);
+            return new Retorno<bool>(true);
         }
 
         [HttpPut("atualizarComentarioCard")]
-        public Retorno<bool> AlterarComentario([FromBody] CardComentario cardComentario)
+        public Retorno<bool> AlterarComentario([FromBody] ComentarioAlteracao comentarioAlteracao)
         {
-            return null;
+            var resultado = _comentario.AlterarComentario(comentarioAlteracao);
+            return new Retorno<bool>(resultado);
         }
 
         [HttpDelete("deletarComentarioCard")]
         public Retorno<bool> DeletarComentario(int id)
         {
-            return null;
+            var resultado = _comentario.DeletarComentario(id);
+            return new Retorno<bool>(resultado);
         }
     }
 }

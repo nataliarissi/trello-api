@@ -1,8 +1,10 @@
 using System.Data.SqlClient;
-using TrelloAPI.Entidades;
 using TrelloAPI.Repositorios.Interfaces;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
+using TrelloAPI.Entidades.Cards;
+using TrelloAPI.Entidades.Comentarios;
+using System;
 
 namespace TrelloAPI.Repositorios.Implementacoes
 {
@@ -21,7 +23,7 @@ namespace TrelloAPI.Repositorios.Implementacoes
 
         public Card? ObterCardCompletoPorId(int id)
         {
-            var queryPorID = "SELECT * FROM CARD WHERE id = @id";
+            var queryPorID = "SELECT * FROM CARD ORDER BY DATAPUBLICACAO DESC";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -39,9 +41,9 @@ namespace TrelloAPI.Repositorios.Implementacoes
             }
         }
 
-        public bool CadastrarCard([FromBody] CardCadastro cardCadastro)
+        public bool CadastrarCard(CardCadastro cardCadastro)
         {
-            var queryCadastrar = "INSERT INTO CARD (Titulo, Etiqueta, DataEntrega, DataInicio) values (@Titulo, @Etiqueta, @DataEntrega, GETDATE())";
+            var queryCadastrar = "INSERT INTO CARD (Titulo, Conteudo, Assunto, Etiqueta, DataPublicacao, DataEntrega) values (@Titulo, @Conteudo, @Assunto, @Etiqueta, GETDATE(), @DataEntrega)";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -49,6 +51,8 @@ namespace TrelloAPI.Repositorios.Implementacoes
                 new
                 {
                     Titulo = cardCadastro.Titulo,
+                    Conteudo = cardCadastro.Conteudo,
+                    Assunto = cardCadastro.Assunto,
                     Etiqueta = cardCadastro.Etiqueta,
                     DataEntrega = cardCadastro.DataEntrega
                 });
@@ -56,9 +60,9 @@ namespace TrelloAPI.Repositorios.Implementacoes
             }
         }
 
-        public bool AlterarDadosCard([FromBody] CardAlteracao cardAlteracao)
+        public bool AlterarDadosCard(CardAlteracao cardAlteracao)
         {
-            var queryAlterar = "UPDATE CARD SET Titulo = @Titulo, Etiqueta = @Etiqueta, DataEntrega = @DataEntrega WHERE Id = @Id";
+            var queryAlterar = "UPDATE CARD SET Titulo = @Titulo, Conteudo = @Conteudo, Assunto = @Assunto, Etiqueta = @Etiqueta, DataEntrega = @DataEntrega WHERE Id = @Id";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -67,12 +71,15 @@ namespace TrelloAPI.Repositorios.Implementacoes
                 {
                     Id = cardAlteracao.Id,
                     Titulo = cardAlteracao.Titulo,
+                    Conteudo = cardAlteracao.Conteudo,
+                    Assunto= cardAlteracao.Assunto,
                     Etiqueta = cardAlteracao.Etiqueta,
                     DataEntrega = cardAlteracao.DataEntrega
                 });
                 return resultado > 0;
             }
         }
+
         public bool DeletarCard(int id)
         {
             var queryDeletar = "DELETE CARD WHERE Id = @Id";
@@ -90,11 +97,78 @@ namespace TrelloAPI.Repositorios.Implementacoes
 
         public List<Card> ObterTopCard()
         {
-            var queryTop = "SELECT TOP 3 * FROM CARD";
+            var queryTop = "SELECT TOP 3 * FROM CARD ORDER BY ";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 return connection.Query<Card>(queryTop).ToList();
+            }
+        }
+
+        public List<Card> ObterCardDoBanco()
+        {
+            var queryComentarios = "SELECT * FROM CARD";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                var resultado = connection.Query<Card>(queryComentarios);
+                return resultado.ToList();
+            }
+        }
+
+        public List<Comentario> ObterComentariosPorIdCard(int idCard)
+        {
+            var queryIdCard = "SELECT * FROM CARDCOMENTARIO WHERE IDCARD = @idCard";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                var resultado = connection.Query<Comentario>(queryIdCard,
+                new
+                {
+                    idCard = idCard
+                });
+                return resultado.ToList();
+            }
+        }
+
+        public List<Comentario> ObterComentarios()
+        {
+            var queryComentarios = "SELECT * FROM CARDCOMENTARIO ";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                var resultado = connection.Query<Comentario>(queryComentarios);
+                return resultado.ToList();
+            }
+        }
+
+        public List<Card> ObterCardPorTitulo(string titulo)
+        {
+            var queryTitulo = "SELECT * FROM CARD WHERE Titulo Like '%' + @titulo + '%'";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                var resultado = connection.Query<Card>(queryTitulo,
+                new
+                {
+                   titulo
+                });
+                return resultado.ToList();
+            }
+        }
+
+        public List<Card> ObterCardPorPalavraChave(string palavra)
+        {
+            var queryCardPalavraChave = "SELECT * FROM CARD WHERE TITULO LIKE '%' PALAVRA '%' OR CONTEUDO LIKE '%' PALAVRA '%'";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                var resultado = connection.Query<Card>(queryCardPalavraChave,
+                new
+                {
+                    palavra
+                });
+                return resultado.ToList();
             }
         }
     }

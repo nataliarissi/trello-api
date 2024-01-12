@@ -1,5 +1,6 @@
 using TrelloAPI.Repositorios.Implementacoes;
 using TrelloAPI.Repositorios.Interfaces;
+using TrelloAPI.Servicos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ICardRepositorio, CardRepositorio>();
 builder.Services.AddScoped<IComentarioRepositorio, ComentarioRepositorio>();
+builder.Services.AddScoped<ICardServico, CardServico>();
 
 var app = builder.Build();
 
