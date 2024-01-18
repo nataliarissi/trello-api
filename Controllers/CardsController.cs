@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using TrelloAPI.Entidades;
 using TrelloAPI.Entidades.Cards;
 using TrelloAPI.Repositorios.Interfaces;
-using TrelloAPI.Servicos;
+using TrelloAPI.Servicos.CardServicos;
 
 namespace TrelloAPI.Controllers
 {
@@ -11,12 +11,10 @@ namespace TrelloAPI.Controllers
     [Produces("application/json")]
     public class CardsController : ControllerBase
     {
-        private ICardRepositorio _repositorio { get; set; }
-        private ICardServico _servico;
+        private readonly ICardServico _servico;
 
-        public CardsController(ICardRepositorio repositorio, ICardServico servico)
+        public CardsController(ICardServico servico)
         {
-            _repositorio = repositorio;
             _servico = servico;
         }
 
@@ -24,72 +22,37 @@ namespace TrelloAPI.Controllers
         [Route("{id}")]
         public Retorno<Card?> ObterCardCompletoPorId(int id)
         {
-            Card? cardCompleto = _repositorio.ObterCardCompletoPorId(id);
-            if (cardCompleto == null)
-            {
-                return new Retorno<Card?>("Não foi possível encontrar o card solicitado");
-            }
-            var listaComentarios = _repositorio.ObterComentariosPorIdCard(id);
-
-            foreach (var comentario in listaComentarios)
-            {
-                cardCompleto.Comentarios.Add(comentario);
-            }
-
-            return new Retorno<Card?>(cardCompleto);
-
-            // if(cardCompleto.Etiqueta == EtiquetasCard.Vermelho)
+            return _servico.ObterCardCompletoPorId(id);
         }
 
         [HttpGet("obterTodosCards")]
         public Retorno<List<Card>> ObterTodosCards()
         {
-            List<Card> listaCards = _repositorio.ListarTodosCards();
-            return new Retorno<List<Card>>(listaCards);
+            return _servico.ObterTodosCards();
         }
 
         [HttpPost("cadastrarCard")]
         public Retorno<bool> CadastrarCard([FromBody] CardCadastro cardCadastro)
         {
-            //if(card.Etiqueta == EtiquetasCard.Vermelho && !(cardCadastro.DataInicio > DateTime.Now)){
-            //    return new Retorno<bool>("Erro de etiqueta ou data");
-            //}
-            // if(card.Titulo){
-            //     return new Retorno<bool>("Título já existe no banco de dados");                
-            // }
-
-            if (cardCadastro.Titulo.Contains("Amor") && cardCadastro.Etiqueta != EtiquetasCard.Vermelho)
-            {
-                return new Retorno<bool>("Erro de escrita");
-            }
-            if (cardCadastro.DataEntrega <= DateTime.Now)
-            {
-                return new Retorno<bool>("Erro de data");
-            }
-
-            var resultado = _repositorio.CadastrarCard(cardCadastro);
-            return new Retorno<bool>(true);
+            return _servico.CadastrarCard(cardCadastro);
         }
 
         [HttpPut("alterarCard")]
         public Retorno<bool> AlterarDadosCard([FromBody] CardAlteracao cardAlteracao)
         {
-            var resultado = _repositorio.AlterarDadosCard(cardAlteracao);
-            return new Retorno<bool>(resultado);
+            return _servico.AlterarDadosCard(cardAlteracao);
         }
 
         [HttpDelete("deletarCard")]
         public Retorno<bool> DeletarCard(int id)
         {
-            var resultado = _repositorio.DeletarCard(id);
-            return new Retorno<bool>(resultado);
+            return _servico.DeletarCard(id);
         }
 
         [HttpGet("obterTop3Card")]
         public Retorno<List<Card>> ObterTopCard()
         {
-            List<Card> listaTopCards = _repositorio.ObterTopCard();
-            return new Retorno<List<Card>>(listaTopCards);
+            return _servico.ObterTopCard();
         }
 
         [HttpGet("obterCards")]
@@ -99,21 +62,21 @@ namespace TrelloAPI.Controllers
         }
 
         [HttpGet("obterCardPorTitulo")]
-        public List<Card> ObterCardPorTitulo(string titulo)
+        public Retorno<List<Card>> ObterCardPorTitulo(string titulo)
         {
-            return _repositorio.ObterCardPorTitulo(titulo);
-        }
-
-        [HttpGet("obterPalavraChave")]
-        public List<string> ObterPalavraChave()
-        {
-            return _repositorio.;
+            return _servico.ObterCardPorTitulo(titulo);
         }
 
         [HttpGet("obterCardPorPalavraChave")]
-        public List<Card> ObterCardPorPalavraChave(string palavra)
+        public Retorno<List<Card>> ObterCardPorPalavraChave(string palavra)
         {
-            return _repositorio.ObterCardPorPalavraChave(palavra);
+            return _servico.ObterCardPorPalavraChave(palavra);
         }
+
+        //[HttpGet("obterPalavraChave")]
+        //public List<string> ObterPalavraChave()
+        //{
+        //    return _repositorio.;
+        //}
     }
 }
