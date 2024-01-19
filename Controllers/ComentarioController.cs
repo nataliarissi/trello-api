@@ -12,6 +12,7 @@ namespace TrelloAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ComentarioController : ControllerBase
     {
         private readonly IComentarioServico _comentarioServico;
@@ -22,21 +23,18 @@ namespace TrelloAPI.Controllers
         }
 
         [HttpPost("cadastrarComentarioCard")]
-        [Authorize]
         public Retorno<bool> CadastrarComentario([FromBody] ComentarioCadastro comentarioCadastro)
         {
             return _comentarioServico.CadastrarComentario(comentarioCadastro);
         }
 
         [HttpPut("atualizarComentarioCard")]
-        [Authorize]
         public Retorno<bool> AlterarComentario([FromBody] ComentarioAlteracao comentarioAlteracao)
         {
             return _comentarioServico.AlterarComentario(comentarioAlteracao);
         }
 
         [HttpDelete("deletarComentarioCard")]
-        [Authorize]
         public Retorno<bool> DeletarComentario(int id)
         {
             return _comentarioServico.DeletarComentario(id);

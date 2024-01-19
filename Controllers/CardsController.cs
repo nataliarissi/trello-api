@@ -10,6 +10,7 @@ namespace TrelloAPI.Controllers
     [ApiController]
     [Route("cards")]
     [Produces("application/json")]
+    [Authorize]
     public class CardsController : ControllerBase
     {
         private readonly ICardServico _servico;
@@ -21,63 +22,54 @@ namespace TrelloAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [Authorize]
         public Retorno<Card?> ObterCardCompletoPorId(int id)
         {
             return _servico.ObterCardCompletoPorId(id);
         }
 
         [HttpGet("obterTodosCards")]
-        [Authorize]
         public Retorno<List<Card>> ObterTodosCards()
         {
             return _servico.ObterTodosCards();
         }
 
         [HttpPost("cadastrarCard")]
-        [Authorize]
         public Retorno<bool> CadastrarCard([FromBody] CardCadastro cardCadastro)
         {
             return _servico.CadastrarCard(cardCadastro);
         }
 
         [HttpPut("alterarCard")]
-        [Authorize]
         public Retorno<bool> AlterarDadosCard([FromBody] CardAlteracao cardAlteracao)
         {
             return _servico.AlterarDadosCard(cardAlteracao);
         }
 
         [HttpDelete("deletarCard")]
-        [Authorize]
         public Retorno<bool> DeletarCard(int id)
         {
             return _servico.DeletarCard(id);
         }
 
         [HttpGet("obterTop3Card")]
-        [Authorize]
         public Retorno<List<Card>> ObterTopCard()
         {
             return _servico.ObterTopCard();
         }
 
         [HttpGet("obterCards")]
-        [Authorize]
         public ObterCardsRetorno ObterCards()
         {
             return _servico.ObterTodosCardsComComentario();
         }
 
         [HttpGet("obterCardPorTitulo")]
-        [Authorize]
         public Retorno<List<Card>> ObterCardPorTitulo(string titulo)
         {
             return _servico.ObterCardPorTitulo(titulo);
         }
 
         [HttpGet("obterCardPorPalavraChave")]
-        [Authorize]
         public Retorno<List<Card>> ObterCardPorPalavraChave(string palavra)
         {
             return _servico.ObterCardPorPalavraChave(palavra);
