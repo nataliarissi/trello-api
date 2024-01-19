@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TrelloAPI.Entidades;
 using TrelloAPI.Entidades.Cards;
@@ -21,18 +22,21 @@ namespace TrelloAPI.Controllers
         }
 
         [HttpPost("cadastrarComentarioCard")]
+        [Authorize]
         public Retorno<bool> CadastrarComentario([FromBody] ComentarioCadastro comentarioCadastro)
         {
             return _comentarioServico.CadastrarComentario(comentarioCadastro);
         }
 
         [HttpPut("atualizarComentarioCard")]
+        [Authorize]
         public Retorno<bool> AlterarComentario([FromBody] ComentarioAlteracao comentarioAlteracao)
         {
             return _comentarioServico.AlterarComentario(comentarioAlteracao);
         }
 
         [HttpDelete("deletarComentarioCard")]
+        [Authorize]
         public Retorno<bool> DeletarComentario(int id)
         {
             return _comentarioServico.DeletarComentario(id);
