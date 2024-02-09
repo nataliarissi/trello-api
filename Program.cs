@@ -8,6 +8,7 @@ using TrelloAPI.Infraestrutura.Comentario.Implementacao;
 using TrelloAPI.Infraestrutura.Comentario.Interface;
 using TrelloAPI.Servico.CardServicos.Interface;
 using TrelloAPI.Servico.Implementacao;
+using TrelloAPI.Servico.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,6 +79,8 @@ builder.Services.AddScoped<ICardRepositorio, CardRepositorio>();
 builder.Services.AddScoped<IComentarioRepositorio, ComentarioRepositorio>();
 builder.Services.AddScoped<ICardServico, CardServico>();
 builder.Services.AddScoped<IComentarioServico, ComentarioServico>();
+builder.Services.AddScoped<IBoardServico, BoardServico>();
+builder.Services.AddScoped<IArraiaServico, ArraiaServico>();
 
 var app = builder.Build();
 
