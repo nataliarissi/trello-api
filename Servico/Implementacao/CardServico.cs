@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CardDto.Interface;
+using Microsoft.AspNetCore.Mvc;
 using TrelloAPI.Entidades.Cards;
 using TrelloAPI.Infraestrutura;
-using TrelloAPI.Infraestrutura.Card.Interface;
 using TrelloAPI.Infraestrutura.Entidades.Card.Entidade;
 using TrelloAPI.Servico.CardServicos.Interface;
 
@@ -63,14 +63,14 @@ namespace TrelloAPI.Servico.Implementacao
             return retornoCards;
         }
 
-        public Retorno<CardDto?> ObterCardCompletoPorId(int id)
+        public Retorno<Card?> ObterCardCompletoPorId(int id)
         {
             try
             {
-                CardDto? cardCompleto = _repositorio.ObterCardCompletoPorId(id);
+                Card? cardCompleto = _repositorio.ObterCardCompletoPorId(id);
                 if (cardCompleto == null)
                 {
-                    return new Retorno<CardDto?>("Não foi possível encontrar o card solicitado");
+                    return new Retorno<Card?>("Não foi possível encontrar o card solicitado");
                 }
                 var listaComentarios = _repositorio.ObterComentariosPorIdCard(id);
 
@@ -79,34 +79,34 @@ namespace TrelloAPI.Servico.Implementacao
                     cardCompleto.Comentarios.Add(comentario);
                 }
 
-                return new Retorno<CardDto?>(cardCompleto);
+                return new Retorno<Card?>(cardCompleto);
             }
             catch (Exception ex)
             {
-                new Retorno<CardDto>("Erro ao obter card completo" + ex.Message);
+                new Retorno<Card>("Erro ao obter card completo" + ex.Message);
             }
             // if(cardCompleto.Etiqueta == EtiquetasCard.Vermelho)
 
-            return new Retorno<CardDto?>("");
+            return new Retorno<Card?>("");
         }
 
-        public Retorno<List<CardDto?>> ObterTodosCards()
+        public Retorno<List<Card?>> ObterTodosCards()
         {
             try
             {
-                List<CardDto> listaCards = _repositorio.ListarTodosCards();
+                List<Card> listaCards = _repositorio.ListarTodosCards();
 
                 if (listaCards == null)
-                    return new Retorno<List<CardDto?>>("Erro ao obter todos os cards");
+                    return new Retorno<List<Card?>>("Erro ao obter todos os cards");
 
-                return new Retorno<List<CardDto?>>(listaCards);
+                return new Retorno<List<Card?>>(listaCards);
             }
             catch (Exception ex)
             {
-                new Retorno<List<CardDto?>>("Erro ao obter a lista dos cards" + ex.Message);
+                new Retorno<List<Card?>>("Erro ao obter a lista dos cards" + ex.Message);
             }
 
-            return new Retorno<List<CardDto?>>("");
+            return new Retorno<List<Card?>>("");
         }
 
         public Retorno<bool> CadastrarCard([FromBody] CardCadastro cardCadastro)
@@ -177,54 +177,54 @@ namespace TrelloAPI.Servico.Implementacao
             }
         }
 
-        public Retorno<List<CardDto>> ObterTopCard()
+        public Retorno<List<Card>> ObterTopCard()
         {
             try
             {
-                List<CardDto> listaTopCards = _repositorio.ObterTopCard();
+                List<Card> listaTopCards = _repositorio.ObterTopCard();
 
                 if (listaTopCards == null)
-                    return new Retorno<List<CardDto>>("");
+                    return new Retorno<List<Card>>("");
 
-                return new Retorno<List<CardDto>>(listaTopCards);
+                return new Retorno<List<Card>>(listaTopCards);
             }
             catch (Exception ex)
             {
-                return new Retorno<List<CardDto>>("Erro" + ex.Message);
+                return new Retorno<List<Card>>("Erro" + ex.Message);
             }
         }
 
-        public Retorno<List<CardDto?>> ObterCardPorTitulo(string titulo)
+        public Retorno<List<Card?>> ObterCardPorTitulo(string titulo)
         {
             try
             {
                 var resultado = _repositorio.ObterCardPorTitulo(titulo);
 
                 if (resultado == null)
-                    return new Retorno<List<CardDto?>>("Card não encontrado");
+                    return new Retorno<List<Card?>>("Card não encontrado");
 
-                return new Retorno<List<CardDto?>>(resultado);
+                return new Retorno<List<Card?>>(resultado);
             }
             catch (Exception ex)
             {
-                return new Retorno<List<CardDto>>("Erro" + ex.Message);
+                return new Retorno<List<Card>>("Erro" + ex.Message);
             }
         }
 
-        public Retorno<List<CardDto>> ObterCardPorPalavraChave(string palavra)
+        public Retorno<List<Card>> ObterCardPorPalavraChave(string palavra)
         {
             try
             {
                 var resultado = _repositorio.ObterCardPorPalavraChave(palavra);
 
                 if (resultado == null)
-                    return new Retorno<List<CardDto>>("Erro ao obter a palavra chave");
+                    return new Retorno<List<Card>>("Erro ao obter a palavra chave");
 
-                return new Retorno<List<CardDto>>(resultado);
+                return new Retorno<List<Card>>(resultado);
             }
             catch (Exception ex)
             {
-                return new Retorno<List<CardDto>>("Erro" + ex.Message);
+                return new Retorno<List<Card>>("Erro" + ex.Message);
             }
         }
     }

@@ -3,11 +3,11 @@ using TrelloAPI.Infraestrutura.Entidades.Card.Entidade;
 
 namespace TrelloAPI.Entidades.Cards
 {
-    public class CardDto
+    public class Card
     {
-        public CardDto()
+        public Card()
         {
-            Comentarios = new List<ComentarioDto>();
+            Comentarios = new List<Comentario>();
         }
 
         public int Id { get; set; }
@@ -18,6 +18,6 @@ namespace TrelloAPI.Entidades.Cards
         public EtiquetasCard Etiqueta { get; set; }
         public DateTime DataPublicacao { get; set; }
         public DateTime DataEntrega { get; set; }
-        public List<ComentarioDto> Comentarios { get; set; }
+        public List<Comentario> Comentarios { get; set; }
     }
 }

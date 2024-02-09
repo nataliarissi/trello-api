@@ -9,13 +9,13 @@ namespace TrelloAPI.Servico.CardServicos.Interface
     {
         ObterCardsRetorno ObterTodosCardsComComentario();
 
-        Retorno<CardDto?> ObterCardCompletoPorId(int id);
-        Retorno<List<CardDto>> ObterTodosCards();
+        Retorno<Card?> ObterCardCompletoPorId(int id);
+        Retorno<List<Card>> ObterTodosCards();
         Retorno<bool> CadastrarCard([FromBody] CardCadastro cardCadastro);
         Retorno<bool> AlterarDadosCard([FromBody] CardAlteracao cardAlteracao);
         Retorno<bool> DeletarCard(int id);
-        Retorno<List<CardDto>> ObterTopCard();
-        Retorno<List<CardDto>> ObterCardPorTitulo(string titulo);
-        Retorno<List<CardDto>> ObterCardPorPalavraChave(string palavra);
+        Retorno<List<Card>> ObterTopCard();
+        Retorno<List<Card>> ObterCardPorTitulo(string titulo);
+        Retorno<List<Card>> ObterCardPorPalavraChave(string palavra);
     }
 }

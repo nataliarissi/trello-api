@@ -1,11 +1,11 @@
+using CardDto.Interface;
+using Infraestrutura.Entidades.Implementacao;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using TrelloAPI.Infraestrutura.Card.Interface;
 using TrelloAPI.Infraestrutura.Comentario.Implementacao;
 using TrelloAPI.Infraestrutura.Comentario.Interface;
-using TrelloAPI.Infraestrutura.Entidades.Implementacao;
 using TrelloAPI.Servico.CardServicos.Interface;
 using TrelloAPI.Servico.Implementacao;
 

@@ -1,6 +1,6 @@
 ﻿namespace TrelloAPI.Infraestrutura.Comentario.Entidade
 {
-    public class ComentarioDto
+    public class Comentario
     {
         public int Id { get; set; }
         public int IdCard { get; set; }

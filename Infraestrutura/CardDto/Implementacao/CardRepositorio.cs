@@ -1,11 +1,11 @@
 using System.Data.SqlClient;
+using CardDto.Interface;
 using Dapper;
 using TrelloAPI.Entidades.Cards;
-using TrelloAPI.Infraestrutura.Card.Interface;
 using TrelloAPI.Infraestrutura.Comentario.Entidade;
 using TrelloAPI.Infraestrutura.Entidades.Card.Entidade;
 
-namespace TrelloAPI.Infraestrutura.Entidades.Implementacao
+namespace Infraestrutura.Entidades.Implementacao
 {
     public class CardRepositorio : ICardRepositorio
     {
@@ -20,23 +20,23 @@ namespace TrelloAPI.Infraestrutura.Entidades.Implementacao
         //    _connectionString = "Data Source=.;Initial Catalog=Trello;User ID=sa;Password=Natalia@123;";
         //}
 
-        public CardDto? ObterCardCompletoPorId(int id)
+        public Card? ObterCardCompletoPorId(int id)
         {
             var queryPorID = "SELECT * FROM CARD ORDER BY DATAPUBLICACAO DESC";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                return connection.QueryFirstOrDefault<CardDto>(queryPorID, new { id });
+                return connection.QueryFirstOrDefault<Card>(queryPorID, new { id });
             }
         }
 
-        public List<CardDto> ListarTodosCards()
+        public List<Card> ListarTodosCards()
         {
             var querySql = "SELECT * FROM CARD";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                return connection.Query<CardDto>(querySql).ToList();
+                return connection.Query<Card>(querySql).ToList();
             }
         }
 
@@ -94,34 +94,34 @@ namespace TrelloAPI.Infraestrutura.Entidades.Implementacao
             }
         }
 
-        public List<CardDto> ObterTopCard()
+        public List<Card> ObterTopCard()
         {
             var queryTop = "SELECT TOP 3 * FROM CARD ORDER BY ";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                return connection.Query<CardDto>(queryTop).ToList();
+                return connection.Query<Card>(queryTop).ToList();
             }
         }
 
-        public List<CardDto> ObterCardDoBanco()
+        public List<Card> ObterCardDoBanco()
         {
             var queryComentarios = "SELECT * FROM CARD";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                var resultado = connection.Query<CardDto>(queryComentarios);
+                var resultado = connection.Query<Card>(queryComentarios);
                 return resultado.ToList();
             }
         }
 
-        public List<ComentarioDto> ObterComentariosPorIdCard(int idCard)
+        public List<Comentario> ObterComentariosPorIdCard(int idCard)
         {
             var queryIdCard = "SELECT * FROM CARDCOMENTARIO WHERE IDCARD = @idCard";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                var resultado = connection.Query<ComentarioDto>(queryIdCard,
+                var resultado = connection.Query<Comentario>(queryIdCard,
                 new
                 {
                     idCard
@@ -130,24 +130,24 @@ namespace TrelloAPI.Infraestrutura.Entidades.Implementacao
             }
         }
 
-        public List<ComentarioDto> ObterComentarios()
+        public List<Comentario> ObterComentarios()
         {
             var queryComentarios = "SELECT * FROM CARDCOMENTARIO ";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                var resultado = connection.Query<ComentarioDto>(queryComentarios);
+                var resultado = connection.Query<Comentario>(queryComentarios);
                 return resultado.ToList();
             }
         }
 
-        public List<CardDto> ObterCardPorTitulo(string titulo)
+        public List<Card> ObterCardPorTitulo(string titulo)
         {
             var queryTitulo = "SELECT * FROM CARD WHERE Titulo Like '%' + @titulo + '%'";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                var resultado = connection.Query<CardDto>(queryTitulo,
+                var resultado = connection.Query<Card>(queryTitulo,
                 new
                 {
                     titulo
@@ -156,13 +156,13 @@ namespace TrelloAPI.Infraestrutura.Entidades.Implementacao
             }
         }
 
-        public List<CardDto> ObterCardPorPalavraChave(string palavra)
+        public List<Card> ObterCardPorPalavraChave(string palavra)
         {
             var queryCardPalavraChave = "SELECT * FROM CARD WHERE TITULO LIKE '%' PALAVRA '%' OR CONTEUDO LIKE '%' PALAVRA '%'";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                var resultado = connection.Query<CardDto>(queryCardPalavraChave,
+                var resultado = connection.Query<Card>(queryCardPalavraChave,
                 new
                 {
                     palavra

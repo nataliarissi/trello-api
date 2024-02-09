@@ -22,13 +22,13 @@ namespace TrelloAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public Retorno<CardDto?> ObterCardCompletoPorId(int id)
+        public Retorno<Card?> ObterCardCompletoPorId(int id)
         {
             return _servico.ObterCardCompletoPorId(id);
         }
 
         [HttpGet("obterTodosCards")]
-        public Retorno<List<CardDto>> ObterTodosCards()
+        public Retorno<List<Card>> ObterTodosCards()
         {
             return _servico.ObterTodosCards();
         }
@@ -52,7 +52,7 @@ namespace TrelloAPI.Controllers
         }
 
         [HttpGet("obterTop3Card")]
-        public Retorno<List<CardDto>> ObterTopCard()
+        public Retorno<List<Card>> ObterTopCard()
         {
             return _servico.ObterTopCard();
         }
@@ -64,13 +64,13 @@ namespace TrelloAPI.Controllers
         }
 
         [HttpGet("obterCardPorTitulo")]
-        public Retorno<List<CardDto>> ObterCardPorTitulo(string titulo)
+        public Retorno<List<Card>> ObterCardPorTitulo(string titulo)
         {
             return _servico.ObterCardPorTitulo(titulo);
         }
 
         [HttpGet("obterCardPorPalavraChave")]
-        public Retorno<List<CardDto>> ObterCardPorPalavraChave(string palavra)
+        public Retorno<List<Card>> ObterCardPorPalavraChave(string palavra)
         {
             return _servico.ObterCardPorPalavraChave(palavra);
         }
