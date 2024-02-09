@@ -83,11 +83,9 @@ namespace TrelloAPI.Servico.Implementacao
             }
             catch (Exception ex)
             {
-                new Retorno<Card>("Erro ao obter card completo" + ex.Message);
+                return new Retorno<Card>("Erro ao obter card completo" + ex.Message);
             }
             // if(cardCompleto.Etiqueta == EtiquetasCard.Vermelho)
-
-            return new Retorno<Card?>("");
         }
 
         public Retorno<List<Card?>> ObterTodosCards()
@@ -103,10 +101,8 @@ namespace TrelloAPI.Servico.Implementacao
             }
             catch (Exception ex)
             {
-                new Retorno<List<Card?>>("Erro ao obter a lista dos cards" + ex.Message);
+                return new Retorno<List<Card?>>("Erro ao obter a lista dos cards" + ex.Message);
             }
-
-            return new Retorno<List<Card?>>("");
         }
 
         public Retorno<bool> CadastrarCard([FromBody] CardCadastro cardCadastro)
