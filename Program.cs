@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using TrelloAPI.Repositorios.Implementacoes;
-using TrelloAPI.Repositorios.Interfaces;
-using TrelloAPI.Servicos.CardServicos;
-using TrelloAPI.Servicos.ComentarioServicos;
+using TrelloAPI.Infraestrutura.Card.Interface;
+using TrelloAPI.Infraestrutura.Comentario.Implementacao;
+using TrelloAPI.Infraestrutura.Comentario.Interface;
+using TrelloAPI.Infraestrutura.Entidades.Implementacao;
+using TrelloAPI.Servico.CardServicos.Interface;
+using TrelloAPI.Servico.Implementacao;
 
 var builder = WebApplication.CreateBuilder(args);
 

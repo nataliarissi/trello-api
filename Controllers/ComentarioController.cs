@@ -1,16 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TrelloAPI.Entidades;
-using TrelloAPI.Entidades.Cards;
-using TrelloAPI.Entidades.Comentarios;
-using TrelloAPI.Repositorios.Implementacoes;
-using TrelloAPI.Repositorios.Interfaces;
-using TrelloAPI.Servicos.ComentarioServicos;
+using TrelloAPI.Infraestrutura;
+using TrelloAPI.Infraestrutura.Comentario.Entidade;
+using TrelloAPI.Servico.CardServicos.Interface;
 
 namespace TrelloAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/comentarios")]
     [ApiController]
     [Authorize]
     public class ComentarioController : ControllerBase

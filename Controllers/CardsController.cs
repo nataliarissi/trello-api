@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TrelloAPI.Entidades;
 using TrelloAPI.Entidades.Cards;
-using TrelloAPI.Repositorios.Interfaces;
-using TrelloAPI.Servicos.CardServicos;
+using TrelloAPI.Infraestrutura;
+using TrelloAPI.Infraestrutura.Entidades.Card.Entidade;
+using TrelloAPI.Servico.CardServicos.Interface;
 
 namespace TrelloAPI.Controllers
 {
     [ApiController]
-    [Route("cards")]
+    [Route("/cards")]
     [Produces("application/json")]
     [Authorize]
     public class CardsController : ControllerBase
@@ -22,13 +22,13 @@ namespace TrelloAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public Retorno<Card?> ObterCardCompletoPorId(int id)
+        public Retorno<CardDto?> ObterCardCompletoPorId(int id)
         {
             return _servico.ObterCardCompletoPorId(id);
         }
 
         [HttpGet("obterTodosCards")]
-        public Retorno<List<Card>> ObterTodosCards()
+        public Retorno<List<CardDto>> ObterTodosCards()
         {
             return _servico.ObterTodosCards();
         }
@@ -52,7 +52,7 @@ namespace TrelloAPI.Controllers
         }
 
         [HttpGet("obterTop3Card")]
-        public Retorno<List<Card>> ObterTopCard()
+        public Retorno<List<CardDto>> ObterTopCard()
         {
             return _servico.ObterTopCard();
         }
@@ -64,21 +64,21 @@ namespace TrelloAPI.Controllers
         }
 
         [HttpGet("obterCardPorTitulo")]
-        public Retorno<List<Card>> ObterCardPorTitulo(string titulo)
+        public Retorno<List<CardDto>> ObterCardPorTitulo(string titulo)
         {
             return _servico.ObterCardPorTitulo(titulo);
         }
 
         [HttpGet("obterCardPorPalavraChave")]
-        public Retorno<List<Card>> ObterCardPorPalavraChave(string palavra)
+        public Retorno<List<CardDto>> ObterCardPorPalavraChave(string palavra)
         {
             return _servico.ObterCardPorPalavraChave(palavra);
         }
-
-        //[HttpGet("obterPalavraChave")]
-        //public List<string> ObterPalavraChave()
-        //{
-        //    return _repositorio.;
-        //}
     }
 }
+
+//[HttpGet("obterPalavraChave")]
+//public List<string> ObterPalavraChave()
+//{
+//    return _repositorio.;
+//}

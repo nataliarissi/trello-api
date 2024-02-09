@@ -14,4 +14,12 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Infraestrutura\Arraia\Entidade\" />
+    <Folder Include="Infraestrutura\Arraia\Interface\" />
+    <Folder Include="Infraestrutura\Arraia\Implementacao\" />
+    <Folder Include="Infraestrutura\Board\Implementacao\" />
+    <Folder Include="Infraestrutura\Board\Interface\" />
+  </ItemGroup>
+
 </Project>
